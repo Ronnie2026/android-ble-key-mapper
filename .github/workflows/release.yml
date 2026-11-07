@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Existing tested version tag, e.g. v0.1'
+        description: 'Version to publish from selected ref, e.g. v0.1'
         required: true
         type: string
 permissions:
@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.tag || github.ref_name }}
+          ref: ${{ github.sha }}
           fetch-depth: 0
       - uses: actions/setup-java@v4
         with:
@@ -41,8 +41,6 @@ jobs:
           [xml]$manifest = Get-Content android-app/AndroidManifest.xml -Raw
           $version = $manifest.manifest.GetAttribute('versionName', 'http://schemas.android.com/apk/res/android')
           if ($env:RELEASE_TAG -notmatch '^v\d+\.\d+(\.\d+)?$' -or $env:RELEASE_TAG -ne "v$version") { throw 'Tag and application version must match' }
-          git rev-parse --verify "refs/tags/$env:RELEASE_TAG"
-          if ($LASTEXITCODE) { throw 'Release tag must already exist' }
       - name: Restore existing signing key
         env:
           KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
@@ -69,7 +67,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
         run: |
-          gh release create $env:RELEASE_TAG dist/*.apk dist/SHA256SUMS.txt --verify-tag --title "Android BLE Key Mapper $env:RELEASE_TAG" --notes-file "docs/releases/$env:RELEASE_TAG.md"
+          $assets = @((Get-ChildItem dist/*.apk).FullName) + @('dist/SHA256SUMS.txt')
+          gh release create $env:RELEASE_TAG @assets --target $env:GITHUB_SHA --title "Android BLE Key Mapper $env:RELEASE_TAG" --notes-file "docs/releases/$env:RELEASE_TAG.md"
           if ($LASTEXITCODE) { throw 'Release publication failed; existing releases are never overwritten automatically' }
       - name: Remove temporary signing key
         if: always()
