@@ -4,7 +4,7 @@
 
 把蓝牙键盘、宏键盘或独立按键，变成打开常用应用的快捷入口。先连接设备，选择想执行的动作，再按一下实体键完成绑定。
 
-当前版本 **v1.2** · 原生 Android Java · 中文界面 · [MIT License](LICENSE)
+当前版本 **v0.1** · 原生 Android Java · 中文界面 · [MIT License](LICENSE)
 
 ## 为什么做这个项目
 
@@ -93,11 +93,11 @@ sdkmanager "platforms;android-30" "build-tools;35.0.0" "platform-tools"
 .\build-app.ps1
 ```
 
-输出：`dist/YijiaButtons-v1.2.apk`。通过 ADB 安装时，请明确选择自己的手机：
+输出：`dist/Android-BLE-Key-Mapper-v0.1.apk`。通过 ADB 安装时，请明确选择自己的手机：
 
 ```powershell
 adb devices
-adb -s YOUR_PHONE_SERIAL install -r .\dist\YijiaButtons-v1.2.apk
+adb -s YOUR_PHONE_SERIAL install -r .\dist\Android-BLE-Key-Mapper-v0.1.apk
 ```
 
 构建会生成本地开发签名。覆盖升级应复用同一密钥；密钥、SDK、日志和本机数据均不纳入仓库。
@@ -133,3 +133,7 @@ APP 本身没有声明网络或录音权限。按键服务不读取屏幕内容�
 ## License
 
 项目使用 [MIT License](LICENSE)。Material 图标来自 [Google Material Design Icons](https://github.com/google/material-design-icons)，适用 Apache 2.0；许可证与来源说明保留在 [`android-app/assets`](android-app/assets)。
+
+## 下载与版本发布
+
+安装包发布在 [GitHub Releases](https://github.com/Ronnie2026/android-ble-key-mapper/releases)。公开版本从 0.1 开始，后续按 0.2、0.3、0.4 递增。每次发布前需完成对应功能验证；推送版本标签后，由 GitHub Actions 构建、校验签名并发布 APK 和 SHA-256 校验文件。签名配置及发布步骤见 [开发说明](docs/development.md#release-发布)。

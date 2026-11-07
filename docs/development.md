@@ -15,7 +15,7 @@ $env:ANDROID_SDK_ROOT = 'C:\path\to\Android\Sdk'
 
 `resolve-android-toolchain.ps1` 按环境变量查找 SDK，也兼容最初开发环境中 `.tools` 下的缓存。正常克隆仓库不需要获得原开发机器的缓存。
 
-构建包括：Java 编译 → D8 转换 → AAPT 打包 → zipalign 对齐 → APK 签名及校验。输出为 `dist/YijiaButtons-v1.2.apk`。
+构建包括：Java 编译 → D8 转换 → AAPT 打包 → zipalign 对齐 → APK 签名及校验。输出为 `dist/Android-BLE-Key-Mapper-v0.1.apk`。
 
 首次构建会在 `.keys/yijia.jks` 生成本地开发签名。脚本中的 `android` 是开发签名的默认密码，不是生产凭据。发布和覆盖升级应持续使用自己保管的签名密钥；不要将密钥或密钥备份提交到仓库。
 
@@ -72,3 +72,9 @@ A/B/C 只是模拟器的测试按钮，分别发送 F13/F14/F15。它们不限�
 - `android-app/test/KeyboardHarness.java` 是开发用临时虚拟键盘；`CleanupHarness.java` 只清理明确标记的测试记录。它们不打入用户 APK，运行前应阅读源码，并仅用于自己的测试设备。
 
 这些是人工集成验证记录，不是自动化测试覆盖率承诺。第三方实体键盘型号、Android 12 及以上、锁屏、长期后台和重启恢复仍需单独测试。
+
+## Release 发布
+
+公开版本从 0.1 开始，后续依次为 0.2、0.3、0.4。发布前先完成模拟器和实机验证；更新 Manifest 的 versionName 与递增的 versionCode，补充 docs/releases/v版本.md，然后推送对应版本标签。GitHub Actions 会构建、验证签名、生成 SHA-256 校验文件并创建 Release；构建失败不会发布。
+
+首次发布前，仓库需配置 ANDROID_KEYSTORE_BASE64 Secret，内容为现有 .keys/yijia.jks 的 Base64。不要创建新签名替代原签名，否则已有安装无法直接覆盖升级。密钥不得提交到 Git。工作流也支持对已存在的版本标签手动运行；不会自动覆盖已有 Release。

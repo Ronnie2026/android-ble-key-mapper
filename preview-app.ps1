@@ -11,7 +11,7 @@ if (Test-Path -LiteralPath $sdkPathFile) {
 $emulator = Join-Path $sdk 'emulator\emulator.exe'
 $adb = Join-Path $sdk 'platform-tools\adb.exe'
 $serial = 'emulator-5554'
-$apk = Join-Path $PSScriptRoot 'dist\YijiaButtons-v1.2.apk'
+$apk = Join-Path $PSScriptRoot 'dist\Android-BLE-Key-Mapper-v0.1.apk'
 if (!(Test-Path $emulator) -or !(Test-Path $adb)) { throw 'Android Emulator is not installed.' }
 if (!(Test-Path $apk)) { & "$PSScriptRoot\build-app.ps1" }
 $env:ANDROID_SDK_ROOT = $sdk

@@ -327,7 +327,7 @@ public class MainActivity extends Activity {
                     })
                 .setNegativeButton("返回", null)
                 .show());
-    Ui.note(page, "你的按键设置只保存在本机。版本 1.2");
+    Ui.note(page, "你的按键设置只保存在本机。版本 0.1");
   }
 
   private void connectKeyboard() {
