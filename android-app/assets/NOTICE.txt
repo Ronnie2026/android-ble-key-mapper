@@ -1,0 +1,4 @@
+Material icons are sourced from Google's Material Design Icons project:
+https://github.com/google/material-design-icons
+Copyright Google LLC. Licensed under Apache License 2.0.
+See MATERIAL_ICONS_LICENSE.txt in this APK's assets.
